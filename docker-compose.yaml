@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres:17.0-alpine
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: rollauth_db
+    ports:
+      - 5432:5432
+    restart: always
