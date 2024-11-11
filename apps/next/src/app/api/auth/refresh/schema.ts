@@ -1,9 +1,11 @@
 import { z } from "zod";
 
-export const refreshTokenApiSchema = z.object({
-  access_token: z.string(),
-  refresh_token: z.string(),
-}).required();
+export const refreshTokenApiSchema = z
+  .object({
+    access_token: z.string(),
+    refresh_token: z.string(),
+  })
+  .required();
 
 export type ApiRefreshTokenResponse = {
   success: boolean;

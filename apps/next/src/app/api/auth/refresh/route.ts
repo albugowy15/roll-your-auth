@@ -9,7 +9,9 @@ import { cookies } from "next/headers";
 export async function POST(
   request: NextRequest,
 ): Promise<NextResponse<RefreshTokenResponse>> {
-  const parsedRequestBody = refreshTokenApiSchema.safeParse(await request.json());
+  const parsedRequestBody = refreshTokenApiSchema.safeParse(
+    await request.json(),
+  );
   if (!parsedRequestBody.success) {
     return NextResponse.json(
       {
