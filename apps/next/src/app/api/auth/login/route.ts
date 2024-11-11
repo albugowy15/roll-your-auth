@@ -18,13 +18,16 @@ export async function POST(
     );
   }
   try {
-    const result = await fetch("http://localhost:5000/login", {
-      headers: {
-        "Content-Type": "application/json",
+    const result = await fetch(
+      new URL("/login", process.env.BACKEND_APP_URL!),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(parsedData.data),
       },
-      method: "POST",
-      body: JSON.stringify(parsedData.data),
-    });
+    );
     const resBody = (await result.json()) as ApiPostLoginResponse;
     if (!result.ok) {
       return NextResponse.json(
@@ -42,7 +45,6 @@ export async function POST(
         value: resBody.data.access_token,
         httpOnly: true,
         path: "/",
-        secure: true,
         sameSite: "lax",
       });
       cookieStore.set({

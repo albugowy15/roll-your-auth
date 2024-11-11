@@ -12,7 +12,7 @@ export async function refreshSession({
   refreshToken: string;
 }) {
   const response = await fetch(
-    new URL("/api/auth/refresh", "http://localhost:3000"),
+    new URL("/api/auth/refresh", process.env.NEXT_PUBLIC_APP_URL),
     {
       method: "POST",
       headers: {

@@ -3,9 +3,11 @@ import { configOptions } from "./lib/config";
 import fastifyEnv from "@fastify/env";
 import { authRoutes } from "./routes/auth";
 import { profileRoutes } from "./routes/profile";
+import fastifyCors from "@fastify/cors";
 
 const fastify: FastifyInstance = Fastify({ logger: true });
 
+fastify.register(fastifyCors);
 fastify.register(fastifyEnv, configOptions);
 fastify.register(authRoutes);
 fastify.register(profileRoutes);

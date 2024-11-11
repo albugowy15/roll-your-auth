@@ -1,6 +1,8 @@
 import "server-only";
 import { auth, isTokenExpired, refreshSession } from "./auth/server";
 
+const BACKEND_URL = process.env.BACKEND_APP_URL!;
+
 export interface BackendAPIBaseResponse<T> {
   success: boolean;
   message: string;
@@ -40,7 +42,7 @@ export async function fetchWithSession<TData>(
       accessToken = result.data.access_token;
     }
 
-    const response = await fetch(new URL(path, "http://localhost:5000"), {
+    const response = await fetch(new URL(path, BACKEND_URL), {
       method: init?.method,
       headers: {
         Authorization: "Bearer " + accessToken,

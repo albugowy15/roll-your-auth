@@ -22,13 +22,16 @@ export async function POST(
     );
   }
   try {
-    const fetchResponse = await fetch("http://localhost:5000/refresh", {
-      headers: {
-        "Content-Type": "application/json",
+    const fetchResponse = await fetch(
+      new URL("/refresh", process.env.BACKEND_APP_URL),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(parsedRequestBody.data),
       },
-      method: "POST",
-      body: JSON.stringify(parsedRequestBody.data),
-    });
+    );
     const result: ApiRefreshTokenResponse = await fetchResponse.json();
     if (!fetchResponse.ok) {
       return NextResponse.json(

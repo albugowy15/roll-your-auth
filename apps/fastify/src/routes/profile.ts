@@ -31,5 +31,6 @@ export function profileRoutes(fastify: FastifyInstance) {
         username: findUser.username,
       },
     });
+    return;
   });
 }

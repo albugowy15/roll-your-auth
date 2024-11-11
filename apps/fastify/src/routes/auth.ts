@@ -34,30 +34,24 @@ export function authRoutes(
       });
       return;
     }
-    const tokenPayload = {
-      sub: findUser.id,
-    };
     const secret = fastify.getEnvs<Envs>().JWT_SECRET;
-    const token = sign(tokenPayload, secret, {
+    const token = sign({ sub: findUser.id }, secret, {
       expiresIn: JWT_ACCESS_TOKEN_EXPIRES_IN,
     });
 
-    const refreshTokenPayload = {
-      sub: findUser.id,
-      access_token: token,
-    };
-    const refreshToken = sign(refreshTokenPayload, secret, {
+    const refreshToken = sign({ access_token: token }, secret, {
       expiresIn: JWT_REFRESH_TOKEN_EXPIRES_IN,
     });
 
-    return {
+    reply.code(200).send({
       success: true,
       message: "Success",
       data: {
         access_token: token,
         refresh_token: refreshToken,
       },
-    };
+    });
+    return;
   });
 
   fastify.post("/refresh", async (request, reply) => {
@@ -79,17 +73,12 @@ export function authRoutes(
         });
         return;
       }
-      const newAccessTokenPayload = {
-        sub: refreshTokenPayload.data?.sub,
-      };
-      const newAccessToken = sign(newAccessTokenPayload, secret, {
-        expiresIn: JWT_ACCESS_TOKEN_EXPIRES_IN,
-      });
-      const newRefreshTokenPayload = {
-        sub: refreshTokenPayload.data?.sub,
-        access_token: newAccessToken,
-      };
-      const newRefreshToken = sign(newRefreshTokenPayload, secret, {
+      const newAccessToken = sign(
+        { sub: refreshTokenPayload.data?.sub },
+        secret,
+        { expiresIn: JWT_ACCESS_TOKEN_EXPIRES_IN },
+      );
+      const newRefreshToken = sign({ access_token: newAccessToken }, secret, {
         expiresIn: JWT_REFRESH_TOKEN_EXPIRES_IN,
       });
       reply.code(200).send({
